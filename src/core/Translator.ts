@@ -217,23 +217,25 @@ export class Translator {
     }
 
     for (const node of nodes) {
-      if (!node.type) {
+      if ('type' in node && !node.type) {
+        // For the custom object type with locale and keypath
         jobs.push({
           loader,
-          locale: node.locale,
-          keypath: node.keypath,
+          locale: (node as {locale: string; keypath: string}).locale,
+          keypath: (node as {locale: string; keypath: string}).keypath,
           source: sourceLanguage,
           token,
         })
       }
       else if (node.type === 'record') {
-        pushRecord(node, true)
+        pushRecord(node as LocaleRecord, true)
       }
       else {
-        if (node.readonly)
+        // This is a LocaleNode - it doesn't have a locale property
+        if ((node as LocaleNode).readonly)
           continue
 
-        Object.values(loader.getShadowLocales(node, targetLocales))
+        Object.values(loader.getShadowLocales(node as LocaleNode, targetLocales))
           .filter(record => record.locale !== sourceLanguage)
           .forEach(record => pushRecord(record))
       }

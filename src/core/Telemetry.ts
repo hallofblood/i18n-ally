@@ -12,7 +12,7 @@ const AMPLITUDE_API = isProd
   ? '710028b04f0f9274085eec6885e94ceb' // Prod
   : '63d2a7eb46b66d43e0d20b0ba2834cc3' // Dev
 
-const AMPLITUDE_SERVER_ZONE = 'EU'
+const AMPLITUDE_SERVER_ZONE = amplitude.Types.ServerZone.EU
 
 const AMPLITUDE_FLUSH_QUEUE_SIZE = 100
 

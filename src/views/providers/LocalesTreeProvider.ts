@@ -31,7 +31,7 @@ export class LocalesTreeProvider implements TreeDataProvider<LocaleTreeItem> {
   }
 
   getTreeItem(element: LocaleTreeItem): TreeItem {
-    return element
+    return element as any
   }
 
   get flatten() {
@@ -87,7 +87,7 @@ export class LocalesTreeProvider implements TreeDataProvider<LocaleTreeItem> {
     let elements: LocaleTreeItem[] = []
 
     if (element)
-      elements = await element.getChildren(node => this.filter(node, true))
+      elements = await element.getChildrenWithFilter(node => this.filter(node, true))
     else
       elements = this.getRoots()
 

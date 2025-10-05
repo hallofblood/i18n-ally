@@ -1,4 +1,4 @@
-import { ExtensionContext, TreeItemCollapsibleState } from 'vscode'
+import { ExtensionContext, TreeItemCollapsibleState, Uri } from 'vscode'
 import { BaseTreeItem } from '.'
 import i18n from '~/i18n'
 import { KeyUsage } from '~/core'
@@ -12,11 +12,26 @@ export class UsageReportRootItem extends BaseTreeItem {
     public readonly keys: KeyUsage[],
   ) {
     super(ctx)
-    this.iconPath = this.getIcon({
+
+    const iconResult = this.getIcon({
       active: 'checkmark',
       idle: 'warning',
       missing: 'icon-unknown',
     }[this.key])
+
+    // Handle the icon path conversion
+    if (typeof iconResult === 'string') {
+      this.iconPath = iconResult
+    }
+    else if (iconResult && typeof iconResult === 'object' && 'light' in iconResult) {
+      // Convert string paths to Uri objects
+      const iconObj = iconResult as { light: string; dark: string }
+      this.iconPath = {
+        light: Uri.file(iconObj.light),
+        dark: Uri.file(iconObj.dark),
+      }
+    }
+
     this.count = keys.length
     this.collapsibleState = TreeItemCollapsibleState.Collapsed
     this.id = `usage-root-${this.key}`

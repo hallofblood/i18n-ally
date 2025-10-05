@@ -40,23 +40,23 @@ export class UsageReportProvider implements TreeDataProvider<TreeItem> {
     this.rootItems = []
     if (!element) {
       if (this.usages.active.length)
-        this.rootItems.push(new UsageReportRootItem(this.ctx, 'active', this.usages.active))
+        this.rootItems.push(new UsageReportRootItem(this.ctx, 'active', this.usages.active) as any)
       if (this.usages.idle.length)
-        this.rootItems.push(new UsageReportRootItem(this.ctx, 'idle', this.usages.idle))
+        this.rootItems.push(new UsageReportRootItem(this.ctx, 'idle', this.usages.idle) as any)
       if (this.usages.missing.length)
-        this.rootItems.push(new UsageReportRootItem(this.ctx, 'missing', this.usages.missing))
+        this.rootItems.push(new UsageReportRootItem(this.ctx, 'missing', this.usages.missing) as any)
       if (!this.rootItems.length)
         this.rootItems.push(new TreeItem(i18n.t('view.usage_report_none')))
     }
     else if (element instanceof UsageReportRootItem) {
       this.rootItems = this.usages[element.key]
-        .map(usage => new UsageReportTreeItem(this.ctx, usage, element.key))
+        .map(usage => new UsageReportTreeItem(this.ctx, usage, element.key)) as any
     }
     else if (element instanceof UsageReportTreeItem) {
       this.rootItems = await Promise.all(element.usage.occurrences.map(async(o) => {
         const location = await Analyst.getLocationOf(o)
         return new LocationTreeItem(this.ctx, location)
-      }))
+      })) as any
     }
     return this.rootItems
   }

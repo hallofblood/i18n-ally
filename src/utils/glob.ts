@@ -1,8 +1,6 @@
 import { resolve, join } from 'path'
 import fs from 'fs-extra'
-// @ts-expect-error
 import { glob } from 'glob-gitignore'
-// @ts-expect-error
 import parseGitIgnore from 'parse-gitignore'
 import { Config } from '../core/Config'
 import { Global } from '../core/Global'

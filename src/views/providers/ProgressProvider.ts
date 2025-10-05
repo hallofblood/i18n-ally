@@ -31,12 +31,15 @@ export class ProgressProvider implements TreeDataProvider<BaseTreeItem> {
     return element
   }
 
-  async getChildren(element?: BaseTreeItem) {
+  async getChildren(element?: BaseTreeItem): Promise<BaseTreeItem[]> {
     if (element)
       return await element.getChildren()
-    return Object.values(Global.allLocales)
+
+    const progressItems = Object.values(Global.allLocales)
       .map(node => CurrentFile.loader.getCoverage(node))
       .filter(notEmpty)
       .map(cov => new ProgressRootItem(this.ctx, cov))
+
+    return progressItems as BaseTreeItem[]
   }
 }

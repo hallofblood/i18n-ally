@@ -3,9 +3,9 @@
 'use strict'
 
 const path = require('path')
+const webpack = require('webpack')
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin')
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin')
-const { createUnplugin } = require('unplugin')
 
 /** @type {import('webpack').Configuration} */
 const config = {
@@ -63,15 +63,9 @@ const config = {
     new FilterWarningsPlugin({
       exclude: /Critical dependency: the request of a dependency is an expression/,
     }),
-    createUnplugin(() => {
-      return {
-        name: 'replace',
-        enforce: 'pre',
-        transform(code) {
-          return code.replace(/process\.env\.NODE_ENV/g, JSON.stringify(process.env.I18N_ALLY_ENV))
-        },
-      }
-    }).webpack(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.I18N_ALLY_ENV),
+    }),
   ],
 }
 

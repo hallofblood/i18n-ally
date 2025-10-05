@@ -38,10 +38,10 @@ export class CurrentFileNotFoundItem extends BaseTreeItem {
 
   set collapsibleState(_) { }
 
-  async getChildren() {
+  async getChildren(): Promise<BaseTreeItem[]> {
     return this.getKeys()
       .map(keypath => new LocaleNode({ keypath, shadow: true }))
       .map(node => node && new LocaleTreeItem(this.ctx, node, true))
-      .filter(item => item) as LocaleTreeItem[]
+      .filter(item => item) as BaseTreeItem[]
   }
 }

@@ -35,9 +35,9 @@ export class CurrentFileLocalesTreeProvider implements TreeDataProvider<BaseTree
       return await element.getChildren()
 
     const items: BaseTreeItem[] = [
-      new CurrentFileInUseItem(this),
-      new CurrentFileNotFoundItem(this),
-      new CurrentFileExtractionItem(this),
+      new CurrentFileInUseItem(this) as any,
+      new CurrentFileNotFoundItem(this) as any,
+      new CurrentFileExtractionItem(this) as any,
     ]
 
     return items

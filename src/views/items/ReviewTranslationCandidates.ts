@@ -24,7 +24,7 @@ export class ReviewTranslationCandidates extends BaseTreeItem {
     return `${i18n.t('review.translation_candidates')} (${this.candidates.length})`
   }
 
-  async getChildren() {
-    return this.candidates.map(c => new ReviewTranslationCandidatesItem(this.ctx, c))
+  async getChildren(): Promise<BaseTreeItem[]> {
+    return this.candidates.map(c => new ReviewTranslationCandidatesItem(this.ctx, c)) as BaseTreeItem[]
   }
 }

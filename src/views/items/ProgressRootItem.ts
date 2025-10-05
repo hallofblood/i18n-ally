@@ -1,4 +1,3 @@
-import { unicodeProgressBar, unicodeDecorate } from '~/utils'
 import { ProgressMissingListItem } from './ProgressMissingListItem'
 import { ProgressEmptyListItem } from './ProgressEmptyListItem'
 import { ProgressBaseItem } from './ProgressBaseItem'
@@ -8,6 +7,7 @@ import { BaseTreeItem } from './Base'
 import { ReviewTranslationCandidates } from './ReviewTranslationCandidates'
 import { ReviewSuggestions } from './ReviewSuggestions'
 import { Seperator } from './Seperator'
+import { unicodeProgressBar, unicodeDecorate } from '~/utils'
 import { Config, Global } from '~/core'
 
 export class ProgressRootItem extends ProgressBaseItem {
@@ -63,11 +63,11 @@ export class ProgressRootItem extends ProgressBaseItem {
     return context.join('-')
   }
 
-  async getChildren() {
+  async getChildren(): Promise<BaseTreeItem[]> {
     const items: BaseTreeItem[] = [
-      new ProgressTranslatedListItem(this),
-      new ProgressEmptyListItem(this),
-      new ProgressMissingListItem(this),
+      new ProgressTranslatedListItem(this) as any,
+      new ProgressEmptyListItem(this) as any,
+      new ProgressMissingListItem(this) as any,
     ]
     const reviewItems: BaseTreeItem[] = []
 
@@ -77,14 +77,14 @@ export class ProgressRootItem extends ProgressBaseItem {
       const change_requested = comments.filter(c => c.type === 'request_change')
       const suggestions = comments.filter(c => c.suggestion)
       if (change_requested.length)
-        reviewItems.push(new ReviewRequestChangesRoot(this.ctx, change_requested))
+        reviewItems.push(new ReviewRequestChangesRoot(this.ctx, change_requested) as any)
       if (suggestions.length)
-        reviewItems.push(new ReviewSuggestions(this.ctx, suggestions))
+        reviewItems.push(new ReviewSuggestions(this.ctx, suggestions) as any)
       if (translations.length)
-        reviewItems.push(new ReviewTranslationCandidates(this.ctx, translations))
+        reviewItems.push(new ReviewTranslationCandidates(this.ctx, translations) as any)
 
       if (reviewItems.length)
-        reviewItems.unshift(new Seperator(this.ctx))
+        reviewItems.unshift(new Seperator(this.ctx) as any)
     }
 
     return [...items, ...reviewItems]

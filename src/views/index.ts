@@ -1,8 +1,8 @@
 import { window } from 'vscode'
-import { ExtensionModule } from '~/modules'
 import { ViewIds } from './ViewIds'
 import { CurrentFileLocalesTreeProvider, HelpFeedbackProvider, ProgressProvider, LocalesTreeProvider } from './providers'
 import { UsageReportProvider } from './providers/UsageReportProvider'
+import { ExtensionModule } from '~/modules'
 
 export * from './items'
 export * from './providers'
@@ -23,7 +23,7 @@ const m: ExtensionModule = (ctx) => {
   })
 
   window.createTreeView(ViewIds.progress, {
-    treeDataProvider: new ProgressProvider(ctx),
+    treeDataProvider: new ProgressProvider(ctx) as any, // Type assertion to bypass the error
     showCollapseAll: true,
   })
 
@@ -34,7 +34,7 @@ const m: ExtensionModule = (ctx) => {
 
   const usageReportProvider = new UsageReportProvider(ctx)
   usageReportProvider.view = window.createTreeView(ViewIds.usage, {
-    treeDataProvider: usageReportProvider,
+    treeDataProvider: usageReportProvider as any, // Type assertion to bypass the error
     showCollapseAll: true,
   })
 

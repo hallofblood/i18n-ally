@@ -1,4 +1,4 @@
-import { ExtensionContext, TreeItemCollapsibleState, Command } from 'vscode'
+import { ExtensionContext, TreeItemCollapsibleState, Command, Uri } from 'vscode'
 import { EditorPanel } from '../../webview/panel'
 import { BaseTreeItem } from './Base'
 import { decorateLocale, NodeHelper, resolveFlattenRootKeypath, ROOT_KEY, resolveFlattenRoot } from '~/utils'
@@ -59,7 +59,16 @@ export class LocaleTreeItem extends BaseTreeItem {
     if (Translator.isTranslating(this.node))
       return this.getIcon('loading')
     if (this.node.type === 'record') {
-      return this.getFlagIcon(this.node.locale)
+      const flagIcon = this.getFlagIcon(this.node.locale)
+      // Type guard and convert to Uri if it's an object with light/dark paths
+      if (flagIcon !== null && typeof flagIcon === 'object' && flagIcon && 'light' in flagIcon && 'dark' in flagIcon) {
+        const iconObj = flagIcon as { light: string; dark: string }
+        return {
+          light: Uri.file(iconObj.light),
+          dark: Uri.file(iconObj.dark),
+        }
+      }
+      return flagIcon
     }
     else if (this.node.shadow) {
       return this.getIcon('icon-unknown')
@@ -106,7 +115,12 @@ export class LocaleTreeItem extends BaseTreeItem {
     return this.node.type === 'node' && (Config.preferEditor || !!EditorPanel.currentPanel)
   }
 
-  async getChildren(filter: (node: Node) => boolean = () => true) {
+  async getChildren(): Promise<BaseTreeItem[]> {
+    const children = await this.getChildrenWithFilter()
+    return children as BaseTreeItem[]
+  }
+
+  async getChildrenWithFilter(filter: (node: Node) => boolean = () => true): Promise<LocaleTreeItem[]> {
     if (this.editorMode)
       return []
 

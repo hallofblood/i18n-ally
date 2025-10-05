@@ -2,6 +2,7 @@ import { TreeItemCollapsibleState } from 'vscode'
 import { LocaleTreeItem } from './LocaleTreeItem'
 import { ProgressBaseItem } from './ProgressBaseItem'
 import { ProgressRootItem } from './ProgressRootItem'
+import { BaseTreeItem } from './Base'
 import i18n from '~/i18n'
 import { Config, CurrentFile } from '~/core'
 
@@ -36,11 +37,13 @@ export abstract class ProgressSubmenuItem extends ProgressBaseItem {
   }
 
   set collapsibleState(_) { }
-  async getChildren() {
+
+  async getChildren(): Promise<BaseTreeItem[]> {
     const locales = Array.from(new Set([this.node.locale, Config.sourceLanguage]))
-    return this.getKeys()
+    const children = this.getKeys()
       .map(key => CurrentFile.loader.getTreeNodeByKey(key))
       .map(node => node && new LocaleTreeItem(this.ctx, node, true, this.node.locale, locales))
       .filter(item => item) as LocaleTreeItem[]
+    return children as BaseTreeItem[]
   }
 }

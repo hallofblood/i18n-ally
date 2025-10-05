@@ -38,10 +38,10 @@ export class CurrentFileInUseItem extends BaseTreeItem {
 
   set collapsibleState(_) { }
 
-  async getChildren() {
+  async getChildren(): Promise<BaseTreeItem[]> {
     return this.getKeys()
       .map(key => CurrentFile.loader.getTreeNodeByKey(key))
       .map(node => node && new LocaleTreeItem(this.ctx, node, true))
-      .filter(item => item) as LocaleTreeItem[]
+      .filter(item => item) as BaseTreeItem[]
   }
 }
