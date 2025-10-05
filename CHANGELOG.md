@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.14.2](https://github.com/hallofblood/i18n-ally/compare/) (2025-10-05)
+
+
+### ⚡ Features
+
+* suggestion
+
+
 ### [2.14.1](https://github.com/hallofblood/i18n-ally/compare/) (2025-10-05)
 
 

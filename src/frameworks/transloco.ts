@@ -34,7 +34,7 @@ export default class TranslocoFramework extends Framework {
   refactorTemplates(keypath: string) {
     return [
       `{{ '${keypath}' | transloco }}`,
-      `t('${keypath}')`,
+      `{{ t('${keypath} }}')`,
       keypath,
     ]
   }
