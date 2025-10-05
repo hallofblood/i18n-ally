@@ -10,6 +10,7 @@ export default class TranslocoFramework extends Framework {
   detection = {
     packageJSON: [
       '@ngneat/transloco',
+      '@jsverse/transloco',
     ],
   }
 
@@ -71,7 +72,7 @@ export default class TranslocoFramework extends Framework {
 
     const ranges: ScopeRange[] = []
 
-    const regex = /^.*read:\s*['"](.+?)['"].*$/
+    const regex = /^.*(?:read|prefix):\s*['"](.+?)['"].*$/
     const tagStack: string[] = []
     let stackDepth = -1
     let namespace = ''
